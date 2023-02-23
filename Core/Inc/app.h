@@ -8,8 +8,9 @@
 #ifndef INC_APP_H_
 #define INC_APP_H_
 
-
-
-
+namespace Pinball
+{
+    void streamEvents();
+}
 
 #endif /* INC_APP_H_ */

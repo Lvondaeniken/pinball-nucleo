@@ -1,6 +1,11 @@
 [
 {
   "directory": "/Users/lukasvondaniken/Github/pinball-nucleo-cmake/build",
+  "command": "/usr/local/bin/arm-none-eabi-g++ -DSTM32F030x8 -DSTM32F0xx -DUSE_HAL_DRIVER -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Core/Inc -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Drivers/CMSIS/Device/ST/STM32F0xx/Include -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Drivers/CMSIS/Include -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Drivers/STM32F0xx_HAL_Driver/Inc -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Drivers/STM32F0xx_HAL_Driver/Inc/Legacy  -mcpu=cortex-m0 -mthumb -mlittle-endian -mfloat-abi=soft -o CMakeFiles/EmbeddedCMake.dir/Core/Src/app.cpp.obj -c /Users/lukasvondaniken/Github/pinball-nucleo-cmake/Core/Src/app.cpp",
+  "file": "/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Core/Src/app.cpp"
+},
+{
+  "directory": "/Users/lukasvondaniken/Github/pinball-nucleo-cmake/build",
   "command": "/usr/local/bin/arm-none-eabi-gcc -DSTM32F030x8 -DSTM32F0xx -DUSE_HAL_DRIVER -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Core/Inc -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Drivers/CMSIS/Device/ST/STM32F0xx/Include -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Drivers/CMSIS/Include -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Drivers/STM32F0xx_HAL_Driver/Inc -I/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Drivers/STM32F0xx_HAL_Driver/Inc/Legacy  -mcpu=cortex-m0 -mthumb -mlittle-endian -mfloat-abi=soft -o CMakeFiles/EmbeddedCMake.dir/Core/Src/gpio.c.obj -c /Users/lukasvondaniken/Github/pinball-nucleo-cmake/Core/Src/gpio.c",
   "file": "/Users/lukasvondaniken/Github/pinball-nucleo-cmake/Core/Src/gpio.c"
 },

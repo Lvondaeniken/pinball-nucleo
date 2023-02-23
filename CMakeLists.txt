@@ -11,7 +11,8 @@ enable_language(C CXX ASM)
 file(GLOB_RECURSE SRC 
 	Core/*.[c|s] 
 	Core/Src/main.cpp
-	App/*.[c|cpp] 
+  Core/Src/app.cpp
+  Core/Src/*.[c|cpp]
 	Drivers/*.[c|cpp] 
 )
 

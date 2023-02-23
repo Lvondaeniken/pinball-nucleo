@@ -1,4 +1,3 @@
-/* USER CODE BEGIN Header */
 /**
  ******************************************************************************
  * @file           : main.c
@@ -15,48 +14,27 @@
  *
  ******************************************************************************
  */
-/* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "app.h"
 #include "gpio.h"
+#include "stm32f0xx_hal_tim.h"
+#include "tim.h"
 #include "usart.h"
 #include <stdint.h>
 
 /* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
 /* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
 /* Private variables ---------------------------------------------------------*/
-
-/* USER CODE BEGIN PV */
-
-/* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
-/* USER CODE BEGIN PFP */
-
-/* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
-/* USER CODE BEGIN 0 */
-
-/* USER CODE END 0 */
 
 /**
  * @brief  The application entry point.
@@ -64,9 +42,6 @@ void SystemClock_Config(void);
  */
 int main(void)
 {
-    /* USER CODE BEGIN 1 */
-
-    /* USER CODE END 1 */
 
     /* MCU Configuration--------------------------------------------------------*/
 
@@ -74,36 +49,20 @@ int main(void)
      */
     HAL_Init();
 
-    /* USER CODE BEGIN Init */
-
-    /* USER CODE END Init */
-
     /* Configure the system clock */
     SystemClock_Config();
-
-    /* USER CODE BEGIN SysInit */
-
-    /* USER CODE END SysInit */
 
     /* Initialize all configured peripherals */
     MX_GPIO_Init();
     MX_USART2_UART_Init();
-    /* USER CODE BEGIN 2 */
+    MX_TIM1_Init();
 
-    /* USER CODE END 2 */
+    TIM1->CCR1 = 0;
+    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
+    TIM1->CCR2 = 0;
+    HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_2);
 
-    /* Infinite loop */
-    /* USER CODE BEGIN WHILE */
-    const char text[] = "hello";
-    while (1)
-    {
-        HAL_UART_Transmit(&huart2, (uint8_t*)text, 4, 3);
-
-        /* USER CODE END WHILE */
-
-        /* USER CODE BEGIN 3 */
-    }
-    /* USER CODE END 3 */
+    Pinball::streamEvents();
 }
 
 /**
@@ -143,23 +102,17 @@ void SystemClock_Config(void)
     }
 }
 
-/* USER CODE BEGIN 4 */
-
-/* USER CODE END 4 */
-
 /**
  * @brief  This function is executed in case of error occurrence.
  * @retval None
  */
 void Error_Handler(void)
 {
-    /* USER CODE BEGIN Error_Handler_Debug */
     /* User can add his own implementation to report the HAL error return state */
     __disable_irq();
     while (1)
     {
     }
-    /* USER CODE END Error_Handler_Debug */
 }
 
 #ifdef USE_FULL_ASSERT
@@ -172,10 +125,8 @@ void Error_Handler(void)
  */
 void assert_failed(uint8_t* file, uint32_t line)
 {
-    /* USER CODE BEGIN 6 */
     /* User can add his own implementation to report the file name and line
        number, ex: printf("Wrong parameters value: file %s on line %d\r\n", file,
        line) */
-    /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
