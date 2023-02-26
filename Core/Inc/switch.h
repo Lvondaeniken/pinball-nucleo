@@ -8,7 +8,7 @@ namespace Pinball
     class Switch
     {
     public:
-        Switch(uint16_t pin, GPIO_TypeDef* port, bool inverted = false);
+        Switch(uint16_t pin, GPIO_TypeDef* port, bool inverted = true);
         ~Switch() = default;
         bool isSet();
 

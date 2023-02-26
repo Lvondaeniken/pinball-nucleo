@@ -6,11 +6,11 @@ namespace Pinball
     class Switch;
     class Coil;
 
-    class Bumper
+    class Ballshooter
     {
     public:
-        Bumper(uint8_t id, Switch* pSwitch, Coil* pCoil);
-        ~Bumper() = default;
+        Ballshooter(Switch* pSwitch, Coil* pBallshooterCoil, Coil* pMagazineCoil);
+        ~Ballshooter() = default;
         void update();
 
     private:
@@ -19,13 +19,15 @@ namespace Pinball
             eIdle,
             eCoilEnabled,
             eWaitSwitchRelease,
+            eWaitRefill
         };
         const char* getName();
 
-        Switch *m_switch;
-        Coil *m_coil;
+        Switch* m_switch;
+        Coil* m_ballshooterCoil;
+        Coil* m_magazineCoil;
 
-        char m_name[3] = "bx";
+        char m_name[3] = "bs";
         uint16_t m_coilEnabledPeriods = 0;
         EState m_state;
     };

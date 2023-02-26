@@ -3,24 +3,30 @@
 namespace Pinball
 {
     class Switch;
+    class Coil;
 
-    class Target
+    class Kicker
     {
     public:
-        Target(uint8_t id, Switch *pSwitch);
-        ~Target() = default;
+        Kicker(char id, Switch* pSwitch, Coil* pCoil);
+        ~Kicker() = default;
         void update();
 
     private:
         enum class EState
         {
             eIdle,
+            eCoilEnabled,
             eWaitSwitchRelease,
         };
         const char* getName();
+        void setPWM(uint32_t val);
 
         Switch *m_switch;
-        char m_name[3] = "tx";
+        Coil *m_coil;
+
+        char m_name[3] = "kx";
+        uint16_t m_coilEnabledPeriods = 0;
         EState m_state;
     };
 

@@ -1,6 +1,7 @@
 
 
 #include "target.h"
+#include "log.h"
 #include "switch.h"
 
 namespace Pinball
@@ -20,6 +21,7 @@ namespace Pinball
         {
             if (m_switch->isSet())
             {
+                send("target");
                 m_state = EState::eWaitSwitchRelease;
             }
             break;

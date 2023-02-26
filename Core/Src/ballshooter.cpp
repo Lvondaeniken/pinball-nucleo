@@ -1,21 +1,21 @@
 
-#include "bumper.h"
+#include "ballshooter.h"
 #include "coil.h"
 #include "switch.h"
 #include "log.h"
 
 namespace Pinball
 {
-    Bumper::Bumper(uint8_t id, Switch* pSwitch, Coil* pCoil)
+    Ballshooter::Ballshooter(Switch* pSwitch, Coil* pBallshooterCoil, Coil* pMagazineCoil)
         : m_switch(pSwitch)
-        , m_coil(pCoil)
+        , m_ballshooterCoil(pBallshooterCoil)
+        , m_magazineCoil(pMagazineCoil)
         , m_coilEnabledPeriods(0)
         , m_state(EState::eIdle)
     {
-        m_name[1] = (char)id;
     }
 
-    void Bumper::update()
+    void Ballshooter::update()
     {
         switch (m_state)
         {
@@ -23,10 +23,10 @@ namespace Pinball
         {
             if (m_switch->isSet())
             {
-                send("bmp");
                 m_state = EState::eCoilEnabled;
                 m_coilEnabledPeriods = 5;
-                m_coil->enable();
+                m_ballshooterCoil->enable();
+                send("bs");
             }
             break;
         }
@@ -38,7 +38,7 @@ namespace Pinball
             }
             else
             {
-                m_coil->disable();
+                m_ballshooterCoil->disable();
                 m_state = EState::eWaitSwitchRelease;
             }
             break;
@@ -47,14 +47,29 @@ namespace Pinball
         {
             if (!m_switch->isSet())
             {
-                m_state = EState::eIdle;
+                m_state = EState::eWaitRefill;
+                m_magazineCoil->enable();
+                m_coilEnabledPeriods = 5;
             }
             break;
+        }
+        case EState::eWaitRefill:
+        {
+            if (m_coilEnabledPeriods > 0)
+            {
+                m_coilEnabledPeriods--;
+            }
+            else
+            {
+                m_magazineCoil->disable();
+                m_state = EState::eIdle;
+            }
+          break;
         }
         }
     }
 
-    const char* Bumper::getName()
+    const char* Ballshooter::getName()
     {
         return m_name;
     }

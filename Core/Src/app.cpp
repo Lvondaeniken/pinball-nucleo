@@ -6,28 +6,21 @@
  */
 
 #include "app.h"
+#include "ballshooter.h"
 #include "bumper.h"
+#include "coil.h"
 #include "events.h"
 #include "gpio.h"
 #include "iodef.h"
-#include "main.h"
-#include "stm32f0xx_hal_gpio.h"
-#include "stm32f0xx_hal_uart.h"
-#include "target.h"
-#include "usart.h"
-#include "coil.h"
+#include "kicker.h"
+#include "slingshot.h"
 #include "switch.h"
+#include "target.h"
+#include "log.h"
 
 namespace
 {
     const uint32_t cDelayMs = 1000;
-    const char pNewline[] = "\r\n";
-
-    void send(const char* pText)
-    {
-        HAL_UART_Transmit(&huart2, (uint8_t*)pText, sizeof(pText), 10);
-        HAL_UART_Transmit(&huart2, (uint8_t*)pNewline, sizeof(pNewline), 10);
-    }
     void delayMs(uint32_t durationMs)
     {
         for (uint64_t i = 1000 * durationMs; i > 0; i--)
@@ -58,98 +51,45 @@ namespace Pinball
     auto t3_switch = Switch(TARGET3_Pin, TARGET3_GPIO_Port);
     auto target3 = Target(3, &t3_switch);
 
-    void poll_bumpers();
-    void poll_flipper();
-    void poll_targets();
-    void poll_slingshot();
-    void poll_ballshooter();
-    void poll_lightbarrier();
+    auto left_slingshot_switch = Switch(LEFT_SLINGSHOT_SWITCH_Pin, LEFT_SLINGSHOT_SWITCH_GPIO_Port);
+    auto left_slingshot_coil = Coil(LEFT_SLINGSHOT_COIL_Pin, LEFT_SLINGSHOT_COIL_GPIO_Port);
+    auto left_slingshot = Slingshot('l', &left_slingshot_switch, &left_slingshot_coil);
 
-    bool isSet(const Part& part)
-    {
-        if (part.inverted)
-        {
-            return (HAL_GPIO_ReadPin(part.swPort, part.swPin) == 0);
-        }
-        else
-        {
-            return HAL_GPIO_ReadPin(part.swPort, part.swPin);
-        }
-    }
+    auto right_slingshot_switch = Switch(RIGHT_SLINGSHOT_SWITCH_Pin, RIGHT_SLINGSHOT_SWITCH_GPIO_Port);
+    auto right_slingshot_coil = Coil(RIGHT_SLINGSHOT_COIL_Pin, LEFT_SLINGSHOT_COIL_GPIO_Port);
+    auto right_slingshot = Slingshot('r', &right_slingshot_switch, &right_slingshot_coil);
 
-    void trigger(const Part& part)
-    {
-        switch (part.coil)
-        {
-        case ECoil::eNone:
-        {
-            break;
-        }
-        case ECoil::eKickerLeft:
-        {
-            TIM1->CCR1 = 1000;
-            HAL_GPIO_WritePin(part.coilPort, part.coilPin, (GPIO_PinState)1);
-            delayMs(cDelayMs);
-            HAL_GPIO_WritePin(part.coilPort, part.coilPin, (GPIO_PinState)0);
-            TIM1->CCR1 = 500; // change dutycycle for holding the flipper
-            break;
-        }
-        case ECoil::eKickerRight:
-        {
-            TIM1->CCR2 = 1000;
-            HAL_GPIO_WritePin(part.coilPort, part.coilPin, (GPIO_PinState)1);
-            delayMs(cDelayMs);
-            HAL_GPIO_WritePin(part.coilPort, part.coilPin, (GPIO_PinState)0);
-            TIM1->CCR2 = 500; // change dutycycle for holding the flipper
-            break;
-        }
-        default:
-        {
-            HAL_GPIO_WritePin(part.coilPort, part.coilPin, (GPIO_PinState)1);
-            delayMs(cDelayMs);
-            HAL_GPIO_WritePin(part.coilPort, part.coilPin, (GPIO_PinState)0);
-            break;
-        }
-        };
-    }
+    auto right_kicker_sw = Switch(RIGHT_KICKER_SWITCH_Pin, RIGHT_KICKER_SWITCH_GPIO_Port);
+    auto right_kicker_coil = Coil(RIGHT_KICKER_COIL_Pin, RIGHT_KICKER_COIL_GPIO_Port);
+    auto right_kicker = Kicker('r', &right_kicker_sw, &right_kicker_coil);
+
+    auto left_kicker_sw = Switch(LEFT_KICKER_SWITCH_Pin, LEFT_KICKER_SWITCH_GPIO_Port);
+    auto left_kicker_coil = Coil(LEFT_KICKER_COIL_Pin, LEFT_KICKER_COIL_GPIO_Port);
+    auto left_kicker = Kicker('l', &left_kicker_sw, &left_kicker_coil);
+
+    auto ballshooter_sw = Switch(BALLSHOOTER_SWITCH_Pin, BALLSHOOTER_SWITCH_GPIO_Port);
+    auto ballshooter_coil = Coil(BALLSHOOTER_COIL_Pin, BALLSHOOTER_COIL_GPIO_Port);
+    auto magazine_coil = Coil(MAGAZIN_COIL_Pin, MAGAZIN_COIL_GPIO_Port);
+    auto ballshooter = Ballshooter(&ballshooter_sw, &ballshooter_coil, &magazine_coil);
 
     void streamEvents()
     {
+        send("start");
         while (1)
         {
             delayMs(50);
+            bumper1.update();
+            bumper2.update();
+            bumper3.update();
+            target1.update();
+            target2.update();
+            target3.update();
+            left_slingshot.update();
+            right_slingshot.update();
+            right_kicker.update();
+            left_kicker.update();
+            ballshooter.update();
         };
     }
 
-    void poll_flipper(void)
-    {
-        static uint8_t btn_flipperL_flag = 1;
-        static uint8_t btn_flipperR_flag = 1;
-
-        // left
-        // if (isSet(leftKicker) && btn_flipperL_flag)
-        // {
-        //    btn_flipperL_flag = 0;
-        //   trigger(leftKicker);
-        //  send(leftKicker.serID);
-        // }
-        // if (!isSet(leftKicker) && btn_flipperL_flag == 0)
-        // {
-        //     TIM1->CCR1 = 0;
-        //   btn_flipperL_flag = 1;
-        //}
-
-        // right
-        // if (isSet(rightKicker) && btn_flipperR_flag)
-        //{
-        //   btn_flipperR_flag = 0;
-        //  trigger(rightKicker);
-        // send(rightKicker.serID);
-        //}
-        // if (!isSet(rightKicker) && btn_flipperR_flag == 0)
-        //{
-        //   TIM1->CCR2 = 0;
-        //  btn_flipperR_flag = 1;
-        // }
-    }
 }

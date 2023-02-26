@@ -1,21 +1,22 @@
 
-#include "bumper.h"
+
+#include "slingshot.h"
 #include "coil.h"
 #include "switch.h"
 #include "log.h"
 
 namespace Pinball
 {
-    Bumper::Bumper(uint8_t id, Switch* pSwitch, Coil* pCoil)
+    Slingshot::Slingshot(char id, Switch* pSwitch, Coil* pCoil)
         : m_switch(pSwitch)
         , m_coil(pCoil)
         , m_coilEnabledPeriods(0)
         , m_state(EState::eIdle)
     {
-        m_name[1] = (char)id;
+        m_name[1] = id;
     }
 
-    void Bumper::update()
+    void Slingshot::update()
     {
         switch (m_state)
         {
@@ -23,7 +24,7 @@ namespace Pinball
         {
             if (m_switch->isSet())
             {
-                send("bmp");
+            send("slingshot");
                 m_state = EState::eCoilEnabled;
                 m_coilEnabledPeriods = 5;
                 m_coil->enable();
@@ -54,7 +55,7 @@ namespace Pinball
         }
     }
 
-    const char* Bumper::getName()
+    const char* Slingshot::getName()
     {
         return m_name;
     }

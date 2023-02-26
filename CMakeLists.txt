@@ -16,6 +16,10 @@ file(GLOB_RECURSE SRC
   Core/Src/target.cpp
   Core/Src/switch.cpp
   Core/Src/coil.cpp
+  Core/Src/ballshooter.cpp
+  Core/Src/kicker.cpp
+  Core/Src/slingshot.cpp
+  Core/Src/log.cpp
   Core/Src/*.[c|cpp]
 	Drivers/*.[c|cpp] 
 )
