@@ -12,6 +12,10 @@ file(GLOB_RECURSE SRC
 	Core/*.[c|s] 
 	Core/Src/main.cpp
   Core/Src/app.cpp
+  Core/Src/bumper.cpp
+  Core/Src/target.cpp
+  Core/Src/switch.cpp
+  Core/Src/coil.cpp
   Core/Src/*.[c|cpp]
 	Drivers/*.[c|cpp] 
 )
