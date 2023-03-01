@@ -1,8 +1,8 @@
 
 #include "ballshooter.h"
 #include "coil.h"
-#include "switch.h"
 #include "log.h"
+#include "switch.h"
 
 namespace Pinball
 {
@@ -12,6 +12,7 @@ namespace Pinball
         , m_magazineCoil(pMagazineCoil)
         , m_coilEnabledPeriods(0)
         , m_state(EState::eIdle)
+        , m_enable(false)
     {
     }
 
@@ -25,7 +26,8 @@ namespace Pinball
             {
                 m_state = EState::eCoilEnabled;
                 m_coilEnabledPeriods = 5;
-                m_ballshooterCoil->enable();
+                if (m_enable)
+                    m_ballshooterCoil->enable();
                 send("bs");
             }
             break;
@@ -48,7 +50,8 @@ namespace Pinball
             if (!m_switch->isSet())
             {
                 m_state = EState::eWaitRefill;
-                m_magazineCoil->enable();
+                if (m_enable)
+                    m_magazineCoil->enable();
                 m_coilEnabledPeriods = 5;
             }
             break;
@@ -64,7 +67,7 @@ namespace Pinball
                 m_magazineCoil->disable();
                 m_state = EState::eIdle;
             }
-          break;
+            break;
         }
         }
     }
@@ -72,6 +75,16 @@ namespace Pinball
     const char* Ballshooter::getName()
     {
         return m_name;
+    }
+
+    void Ballshooter::enable()
+    {
+        m_enable = true;
+    }
+
+    void Ballshooter::disable()
+    {
+        m_enable = false;
     }
 
 }

@@ -1,4 +1,4 @@
 
 set(ARCH
-    " -mcpu=cortex-m0 -mthumb -mlittle-endian -mfloat-abi=soft"
+    " -mcpu=cortex-m0 -mthumb -mfloat-abi=soft -DSTM32F030x8"
 )

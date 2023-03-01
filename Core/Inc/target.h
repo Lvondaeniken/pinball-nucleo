@@ -7,7 +7,7 @@ namespace Pinball
     class Target
     {
     public:
-        Target(uint8_t id, Switch *pSwitch);
+        Target(uint8_t id, Switch* pSwitch);
         ~Target() = default;
         void update();
 
@@ -19,7 +19,7 @@ namespace Pinball
         };
         const char* getName();
 
-        Switch *m_switch;
+        Switch* m_switch;
         char m_name[3] = "tx";
         EState m_state;
     };

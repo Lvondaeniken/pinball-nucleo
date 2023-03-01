@@ -12,6 +12,8 @@ namespace Pinball
         Ballshooter(Switch* pSwitch, Coil* pBallshooterCoil, Coil* pMagazineCoil);
         ~Ballshooter() = default;
         void update();
+        void enable();
+        void disable();
 
     private:
         enum class EState
@@ -30,6 +32,7 @@ namespace Pinball
         char m_name[3] = "bs";
         uint16_t m_coilEnabledPeriods = 0;
         EState m_state;
+        bool m_enable;
     };
 
 }

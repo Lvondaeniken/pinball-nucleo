@@ -20,14 +20,13 @@ file(GLOB_RECURSE SRC
   Core/Src/kicker.cpp
   Core/Src/slingshot.cpp
   Core/Src/log.cpp
-  Core/Src/*.[c|cpp]
 	Drivers/*.[c|cpp] 
 )
 
 add_executable(EmbeddedCMake ${SRC})
 
 target_compile_definitions(EmbeddedCMake PRIVATE $<$<CONFIG:DEBUG>:DEBUG>
-												USE_HAL_DRIVER STM32F0xx
+												USE_HAL_DRIVER
 												STM32F030x8)
 
 target_include_directories(
@@ -47,5 +46,6 @@ target_link_libraries(
 # Create hex file
 add_custom_command(TARGET EmbeddedCMake
         POST_BUILD
+        COMMAND arm-none-eabi-size EmbeddedCMake
         COMMAND arm-none-eabi-objcopy -O ihex EmbeddedCMake ${PROJECT_NAME}.hex
         COMMAND arm-none-eabi-objcopy -O binary EmbeddedCMake ${PROJECT_NAME}.bin)

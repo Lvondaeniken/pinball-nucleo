@@ -22,10 +22,13 @@ set(CMAKE_SIZE ${SIZE})
 # Architecture flags
 include(${CMAKE_CURRENT_LIST_DIR}/arm_arch.cmake)
 
-set(CMAKE_ASM_FLAGS "${ARCH}")
-set(CMAKE_C_FLAGS "${ARCH}")
-set(CMAKE_CXX_FLAGS "${ARCH}")
-set(CMAKE_C_FLAGS_DEBUG "-Os -g")
+set(FLAGS "-fdata-sections -ffunction-sections -Wl,--gc-sections")
+set(CPP_FLAGS "-fno-rtti -fno-exceptions")
+
+set(CMAKE_ASM_FLAGS "${ARCH} -c -x assembler-with-cpp --specs=nano.specs -mfloat-abi=soft -mthumb")
+set(CMAKE_C_FLAGS "${ARCH} ${FLAGS}")
+set(CMAKE_CXX_FLAGS "${ARCH} ${FLAGS} ${CPP_FLAGS}")
+set(CMAKE_C_FLAGS_DEBUG " -Os -g")
 set(CMAKE_CXX_FLAGS_DEBUG "-Os -g")
 set(CMAKE_C_FLAGS_RELEASE "-DNDEBUG -Os -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -Os -g")

@@ -9,14 +9,13 @@
 #include "ballshooter.h"
 #include "bumper.h"
 #include "coil.h"
-#include "events.h"
 #include "gpio.h"
 #include "iodef.h"
 #include "kicker.h"
+#include "log.h"
 #include "slingshot.h"
 #include "switch.h"
 #include "target.h"
-#include "log.h"
 
 namespace
 {
@@ -75,9 +74,43 @@ namespace Pinball
     void streamEvents()
     {
         send("start");
+        bool enable = true;
         while (1)
         {
-            delayMs(50);
+            delayMs(10);
+            char cmd = receive();
+            if (cmd == 'x')
+            {
+                enable = true;
+                send("on");
+                ballshooter.enable();
+                bumper1.enable();
+                bumper2.enable();
+                bumper3.enable();
+                left_slingshot.enable();
+                right_slingshot.enable();
+                right_kicker.enable();
+                left_kicker.enable();
+                ballshooter.enable();
+            }
+            else if (cmd == 'o')
+            {
+                enable = false;
+                send("off");
+                ballshooter.disable();
+                bumper1.disable();
+                bumper2.disable();
+                bumper3.disable();
+                left_slingshot.disable();
+                right_slingshot.disable();
+                right_kicker.disable();
+                left_kicker.disable();
+                ballshooter.disable();
+            }
+            else
+            {
+            }
+
             bumper1.update();
             bumper2.update();
             bumper3.update();

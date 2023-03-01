@@ -1,8 +1,8 @@
 
 #include "bumper.h"
 #include "coil.h"
-#include "switch.h"
 #include "log.h"
+#include "switch.h"
 
 namespace Pinball
 {
@@ -11,6 +11,7 @@ namespace Pinball
         , m_coil(pCoil)
         , m_coilEnabledPeriods(0)
         , m_state(EState::eIdle)
+        , m_enable(false)
     {
         m_name[1] = (char)id;
     }
@@ -26,7 +27,8 @@ namespace Pinball
                 send("bmp");
                 m_state = EState::eCoilEnabled;
                 m_coilEnabledPeriods = 5;
-                m_coil->enable();
+                if (m_enable)
+                    m_coil->enable();
             }
             break;
         }
@@ -57,6 +59,16 @@ namespace Pinball
     const char* Bumper::getName()
     {
         return m_name;
+    }
+
+    void Bumper::enable()
+    {
+        m_enable = true;
+    }
+
+    void Bumper::disable()
+    {
+        m_enable = false;
     }
 
 }
