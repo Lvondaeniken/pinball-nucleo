@@ -77,7 +77,7 @@ namespace Pinball
         bool enable = true;
         while (1)
         {
-            delayMs(10);
+            delayMs(2);
             char cmd = receive();
             if (cmd == 'x')
             {
