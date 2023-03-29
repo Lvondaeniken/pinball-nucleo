@@ -55,7 +55,7 @@ namespace Pinball
     auto left_slingshot = Slingshot('l', &left_slingshot_switch, &left_slingshot_coil);
 
     auto right_slingshot_switch = Switch(RIGHT_SLINGSHOT_SWITCH_Pin, RIGHT_SLINGSHOT_SWITCH_GPIO_Port);
-    auto right_slingshot_coil = Coil(RIGHT_SLINGSHOT_COIL_Pin, LEFT_SLINGSHOT_COIL_GPIO_Port);
+    auto right_slingshot_coil = Coil(RIGHT_SLINGSHOT_COIL_Pin, RIGHT_SLINGSHOT_COIL_GPIO_Port);
     auto right_slingshot = Slingshot('r', &right_slingshot_switch, &right_slingshot_coil);
 
     auto right_kicker_sw = Switch(RIGHT_KICKER_SWITCH_Pin, RIGHT_KICKER_SWITCH_GPIO_Port);
