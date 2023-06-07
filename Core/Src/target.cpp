@@ -21,7 +21,7 @@ namespace Pinball
         {
             if (m_switch->isSet())
             {
-                send("target");
+                send(m_name);
                 m_state = EState::eWaitSwitchRelease;
             }
             break;

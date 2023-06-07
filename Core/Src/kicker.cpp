@@ -24,7 +24,7 @@ namespace Pinball
         {
             if (m_switch->isSet())
             {
-                send("kicker");
+                send(m_name);
                 m_state = EState::eCoilEnabled;
                 m_coilEnabledPeriods = 5;
                 if (m_enable)

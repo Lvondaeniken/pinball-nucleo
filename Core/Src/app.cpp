@@ -109,6 +109,7 @@ namespace Pinball
             }
             else
             {
+
             }
 
             bumper1.update();
