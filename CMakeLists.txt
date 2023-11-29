@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.19)
-
+set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/arm_none_eabi_gcc.cmake)
 project(
   EmbeddedCMake
   VERSION 0.1
