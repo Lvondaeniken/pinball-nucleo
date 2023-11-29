@@ -8,12 +8,8 @@ on:
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-        type: [Debug]
-
+    runs-on: ubuntu-latest
+    container: lvondaeniken:ubuntu-arm-gcc
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
