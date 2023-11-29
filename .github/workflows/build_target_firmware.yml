@@ -1,4 +1,4 @@
-name: CMake
+name: build-target-firmware
 
 on:
   push:
@@ -23,7 +23,7 @@ jobs:
     - name: Archive binary
       uses: actions/upload-artifact@v3
       with:
-        name: dist-without-markdown
+        name: nucleo-firmware
         path: |
           build/*.hex
           
