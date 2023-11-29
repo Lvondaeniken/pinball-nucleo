@@ -20,3 +20,10 @@ jobs:
         docker pull lvondaeniken/ubuntu-arm-gcc:latest
         docker run --rm --mount type=bind,source=.,target=/app lvondaeniken/ubuntu-arm-gcc ./app/build.sh  
 
+    - name: Archive binary
+      uses: actions/upload-artifact@v3
+      with:
+        name: dist-without-markdown
+        path: |
+          build/*.hex
+          
