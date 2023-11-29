@@ -9,7 +9,6 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: lvondaeniken/ubuntu-arm-gcc:latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
@@ -18,6 +17,6 @@ jobs:
 
     - name: Build binary
       run: |
-        cmake . -Bbuild -GNinja
-        cmake --build build  
+        docker pull lvondaeniken/ubuntu-arm-gcc:latest
+        docker run --rm --mount type=bind,source=.,target/app lvondaeniken/ubuntu-arm-gcc ./app/build.sh  
 
