@@ -41,11 +41,10 @@ target_include_directories(
 target_link_libraries(
   EmbeddedCMake
   PRIVATE --specs=nano.specs -Wl,--gc-sections,-Map=${PROJECT_NAME}.map
-		  -T${CMAKE_CURRENT_SOURCE_DIR}/STM32F030R8TX_FLASH.ld)
+  -T${LINKER_SCRIPT})
 
-# Create hex file
 add_custom_command(TARGET EmbeddedCMake
-        POST_BUILD
-        COMMAND arm-none-eabi-size EmbeddedCMake
-        COMMAND arm-none-eabi-objcopy -O ihex EmbeddedCMake ${PROJECT_NAME}.hex
-        COMMAND arm-none-eabi-objcopy -O binary EmbeddedCMake ${PROJECT_NAME}.bin)
+  POST_BUILD
+  COMMAND arm-none-eabi-size EmbeddedCMake
+  COMMAND arm-none-eabi-objcopy -O ihex EmbeddedCMake ${PROJECT_NAME}.hex
+  COMMAND arm-none-eabi-objcopy -O binary EmbeddedCMake ${PROJECT_NAME}.bin)
