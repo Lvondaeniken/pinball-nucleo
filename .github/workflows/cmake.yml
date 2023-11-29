@@ -9,22 +9,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container: lvondaeniken:ubuntu-arm-gcc
+    container: lvondaeniken/ubuntu-arm-gcc:latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
         submodules: recursive
 
-    - name: arm-none-eabi-gcc
-      uses: ryanwinter/arm-none-eabi-gcc@master
-      with:
-        release: '10-2021.10'
-    - name: get cmake
-      uses: lukka/get-cmake@latest  # <--= Just this one-liner suffices.
-
     - name: Build binary
       run: |
         cmake . -Bbuild -GNinja
-        cmake --build build   
+        cmake --build build  
 
