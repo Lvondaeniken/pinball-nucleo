@@ -17,8 +17,8 @@ jobs:
 
     - name: Build binary
       run: |
-        docker pull lvondaeniken/alpine-arm-gcc:latest
-        docker run --rm --mount type=bind,source=.,target=/app lvondaeniken/alpine-arm-gcc ./app/build.sh  
+        docker pull lvondaeniken/alpine-gcc-arm:latest
+        docker run --rm --mount type=bind,source=.,target=/app lvondaeniken/alpine-gcc-arm ./app/build.sh  
 
     - name: Archive binary
       uses: actions/upload-artifact@v3
