@@ -1,4 +1,4 @@
-name: build-target-firmware-ubuntu
+name: build-target-firmware-alpine
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: alpine-latest
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -17,13 +17,13 @@ jobs:
 
     - name: Build binary
       run: |
-        docker pull lvondaeniken/ubuntu-arm-gcc:latest
-        docker run --rm --mount type=bind,source=.,target=/app lvondaeniken/ubuntu-arm-gcc ./app/build.sh  
+        docker pull lvondaeniken/alpine-arm-gcc:latest
+        docker run --rm --mount type=bind,source=.,target=/app lvondaeniken/alpine-arm-gcc ./app/build.sh  
 
     - name: Archive binary
       uses: actions/upload-artifact@v3
       with:
-        name: nucleo-firmware
+        name: nucleo-firmware-alpine
         path: |
           build/*.hex
           
