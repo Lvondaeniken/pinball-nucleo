@@ -51,7 +51,11 @@ namespace Pinball
             {
                 m_state = EState::eWaitRefill;
                 if (m_enable)
-                    m_magazineCoil->enable();
+                {
+                  m_magazineCoil->enable();
+                  send("mg");
+
+                }
                 m_coilEnabledPeriods = 5;
             }
             break;
